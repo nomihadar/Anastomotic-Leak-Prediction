@@ -2,13 +2,19 @@ import pandas as pd
 
 #definitions 
 
-ROOT_PATH = "C:/Users/hp4mp/PythonProjects/AnastomoticLeakProject/"
+ROOT_PATH = "C:/Users/hp4mp/PythonProjects/Anastomotic-Leak-Prediction/"
 
 DATA_PATH = ROOT_PATH + "Data/"
 
 SOURCE_DATA_PATH = DATA_PATH + "sourceFiles/"
 
+EVENTS_INFO_PATH = DATA_PATH + "organizeEvents/"
+
 DICT_PATH = ROOT_PATH + "MetaData/Hebrew_English_Dictionary/"
+
+EN = 'eventName'
+CAT = 'category'
+TYPE = 'type'
 
 
 #if string contains Hebrew chars
