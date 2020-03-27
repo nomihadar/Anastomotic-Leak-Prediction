@@ -1,4 +1,8 @@
+import sys
 import pandas as pd
+import numpy as np
+import datetime
+import json
 
 #definitions 
 
@@ -8,13 +12,11 @@ DATA_PATH = ROOT_PATH + "Data/"
 
 SOURCE_DATA_PATH = DATA_PATH + "sourceFiles/"
 
-EVENTS_INFO_PATH = DATA_PATH + "organizeEvents/"
+ORGANIZE_EVENTS_PATH = DATA_PATH + "organizeEvents/"
 
 DICT_PATH = ROOT_PATH + "MetaData/Hebrew_English_Dictionary/"
 
-EN = 'eventName'
-CAT = 'category'
-TYPE = 'type'
+WRITE_FLAG = False
 
 
 #if string contains Hebrew chars
