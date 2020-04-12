@@ -1,9 +1,3 @@
-# In[1]:
-
-
-
-# In[2]:
-
 from myDefs.defs import *
 from IPython.display import display
 
@@ -14,6 +8,8 @@ pd.options.display.precision = 4
 
 #import sys
 np.set_printoptions(threshold=sys.maxsize) #- print the full NumPy array
+
+WRITE_FLAG = False
 
 OUTPUT_PATH = DATA_PATH + 'matrix1.xlsx'
 
@@ -83,9 +79,9 @@ if __name__ == '__main__':
     print ("num unique patients:", nuniquePatients)
 
     #select events
-    laboratory =  selectEvents(df, "laboratory", 40)
-    physical = selectEvents(df, "physical", 40)
-    drug = selectEvents(df, "drug", 10)
+    laboratory =  selectEvents(df, "laboratory", nuniquePatients*0.25)
+    physical = selectEvents(df, "physical", nuniquePatients*0.25)
+    drug = selectEvents(df, "drug", nuniquePatients*0.1)
 
     # slice events
     data = df.loc[laboratory | physical | drug]
