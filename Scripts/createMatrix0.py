@@ -7,10 +7,12 @@ pd.set_option('display.max_rows', 100)
 pd.options.display.precision = 4
 
 #import sys
-np.set_printoptions(threshold=sys.maxsize) #- print the full NumPy array
+np.set_printoptions(threshold=sys.maxsize) #print the full NumPy array
 
-WRITE_FLAG = False
+WRITE_FLAG = True
 
+INPUT_PATH0 = DATA_PATH + "parseData2.csv"
+INPUT_PATH1 = DATA_PATH + "parseAnonymous0.csv"
 OUTPUT_PATH = DATA_PATH + 'matrix1.xlsx'
 
 
@@ -48,13 +50,13 @@ def organizeAnonymous(anonymous):
                       'Responsible surgeon', 'Kk', 'Simple', 'Severe', 'Complications']
     anonymous = anonymous.drop(columns=cols_to_remove).set_index('pid')
 
-    print ("Anonymous:")
-    display(anonymous)
+    #print ("Anonymous:")
+    #display(anonymous)
 
     return anonymous
 
 
-def selectEvents(df, category, npatients):
+def selectEvents(df, category, npatients=1):
     slice = df[df['inModel'] == 1].loc[df['category'] == category].loc[
         df.groupby('featureName')['pid'].transform('nunique') > npatients].index
     print(category, "length:", len(slice))
@@ -64,8 +66,8 @@ def selectEvents(df, category, npatients):
 if __name__ == '__main__':
 
     # Read files
-    df = readData(DATA_PATH + "parseData2.csv")
-    anonymous = readAnonymous(DATA_PATH + "parseAnonymous0.csv")
+    df = readData(INPUT_PATH0)
+    anonymous = readAnonymous(INPUT_PATH1)
 
     print("data size:", df.shape)
     print("anonymous size:", anonymous.shape)
@@ -79,9 +81,9 @@ if __name__ == '__main__':
     print ("num unique patients:", nuniquePatients)
 
     #select events
-    laboratory =  selectEvents(df, "laboratory", nuniquePatients*0.25)
-    physical = selectEvents(df, "physical", nuniquePatients*0.25)
-    drug = selectEvents(df, "drug", nuniquePatients*0.1)
+    laboratory = selectEvents(df, "laboratory")
+    physical = selectEvents(df, "physical")
+    drug = selectEvents(df, "drug")
 
     # slice events
     data = df.loc[laboratory | physical | drug]
@@ -89,8 +91,8 @@ if __name__ == '__main__':
     print("data shape after selecting events:", data.shape)
 
     #print chosen features
-    print("chosen events:")
-    print(data['featureName'].value_counts().sort_values(ascending=False))
+    #print("chosen events:")
+    #print(data['featureName'].value_counts().sort_values(ascending=False))
 
     # # Create A Features Table
 
@@ -151,12 +153,10 @@ if __name__ == '__main__':
     print("after shape:", after_concat.shape, "Num events:", after_concat.columns.get_level_values(0).nunique())
     print("result shape:", mat1.shape)
 
+    #display(mat1.head())
 
-    display(mat1.head())
-
-    print(mat1.columns.nlevels)
-    print(mat1.columns)
-
+    #print(mat1.columns.nlevels)
+    #print(mat1.columns)
 
     # ### MAT2: drug category
 
@@ -175,12 +175,14 @@ if __name__ == '__main__':
     matrix = pd.concat([mat0, mat1, mat2], axis=1, keys=['metadata', 'numeric_events', 'drugs'])
     matrix = matrix.drop(columns=['Date of surgery'], level=2)
     matrix.columns = matrix.columns.set_names(['type', 'time','feature', 'statistic'])
-    display(matrix.head())
+    #display(matrix.head())
+
+    #
 
     # # Write outputs
 
     #write output
     if WRITE_FLAG:
-        matrix.to_excel(DATA_PATH + 'matrix1.xlsx')
+        matrix.to_excel(OUTPUT_PATH)
 
 
