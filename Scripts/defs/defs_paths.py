@@ -25,5 +25,7 @@ DICT_PATH = ROOT_PATH + "MetaData/Hebrew_English_Dictionary/"
 
 WRITE_FLAG = False
 
+#name of y column 
+Y_COL = 'Anastomotic Leak'
 
 
