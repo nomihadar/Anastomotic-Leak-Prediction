@@ -1,5 +1,11 @@
 
-from myDefs.defs import *
+
+
+import sys
+sys.path.insert(1, '..\Scripts')
+import numpy as np
+import pandas as pd
+from defs.defs_paths import *
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
