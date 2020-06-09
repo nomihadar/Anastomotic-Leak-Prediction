@@ -1,3 +1,5 @@
+import pandas as pd
+
 #if string contains Hebrew chars
 def containHebrewChars(s):
     return any("\u0590" <= c <= "\u05EA" for c in s)

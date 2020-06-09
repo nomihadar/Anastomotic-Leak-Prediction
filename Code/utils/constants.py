@@ -12,7 +12,8 @@ ROOT_PATH = os.path.dirname(os.path.dirname(sys.path[0])) #"C:/Users/hp4mp/Pytho
 #data paths
 DATA_PATH = os.path.join(ROOT_PATH, "Data")
 DPATH_SOURCES = os.path.join(DATA_PATH, "sourceFiles")  
-DPATH_EVENTS = os.path.join(DATA_PATH, "events")  
+DPATH_EVENTS = os.path.join(DATA_PATH, "events")
+DPATH_ANONYMOUS = os.path.join(DATA_PATH, "anonymous")  
 DPATH_MATRICES =  os.path.join(DATA_PATH, "matrices")  
 DPATH_EDA = os.path.join(DATA_PATH, "EDA") #Exploratory Data Analysis 
 
