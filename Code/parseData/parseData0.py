@@ -84,6 +84,7 @@ if __name__ == "__main__":
     df = mergeFiles(headers)
    
     #write output
-    output_path = os.path.join(DPATH_DATA, OUT_FILE)
-    df.to_csv(output_path, index=False)
+    output_path = os.path.join(DPATH_DATA, OUT_FILE) 
+    if not os.path.exists(output_path):
+        df.to_csv(output_path, index=False)
 
