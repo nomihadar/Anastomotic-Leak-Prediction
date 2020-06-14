@@ -8,7 +8,6 @@ import sys, os
 sys.path.append(os.path.dirname(sys.path[0])) #to change to environment 
 from utils.constants import *
 
-import argparse 
 import pandas as pd
 
 
@@ -86,5 +85,5 @@ if __name__ == "__main__":
    
     #write output
     output_path = os.path.join(DPATH_DATA, OUT_FILE)
-    df.to_csv(output_path)
+    df.to_csv(output_path, index=False)
 
