@@ -71,17 +71,6 @@ def mergeFiles(headers):
 
 if __name__ == "__main__":
     
-    #get path of features matrix
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-out', type=str, help='output name of result file')
-    args = parser.parse_args()
-
-    #create output path 
-    if args.out:
-        output_path = os.path.join(DPATH_DATA, args.out)
-    else:
-        output_path = os.path.join(DPATH_DATA, OUT_FILE)
-
     #get headers
     headers = get_headers()
 
@@ -96,5 +85,6 @@ if __name__ == "__main__":
     df = mergeFiles(headers)
    
     #write output
+    output_path = os.path.join(DPATH_DATA, OUT_FILE)
     df.to_csv(output_path)
 
