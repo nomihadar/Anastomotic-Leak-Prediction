@@ -18,6 +18,7 @@ NUM_FILES = 10
 #files names 
 HEADERS_FILE = "eventsHeader.csv"
 EVENTS_FILE = "Events{}.csv"
+OUT_FILE = "data0.csv"
 
 def get_headers():
 
@@ -75,6 +76,12 @@ if __name__ == "__main__":
     parser.add_argument('-out', type=str, help='output name of result file')
     args = parser.parse_args()
 
+    #create output path 
+    if args.out:
+        output_path = os.path.join(DPATH_DATA, args.out)
+    else:
+        output_path = os.path.join(DPATH_DATA, OUT_FILE)
+
     #get headers
     headers = get_headers()
 
@@ -89,6 +96,5 @@ if __name__ == "__main__":
     df = mergeFiles(headers)
    
     #write output
-    output_path = os.path.join(DPATH_DATA, args.out)
     df.to_csv(output_path)
 
