@@ -9,12 +9,12 @@ import pandas as pd
 
 
 #files names 
-INPUT_FILE_1 = "anonymous.xlsx"
+INPUT_FILE_1 = "anonymous_080620_DA.xlsx"
 INPUT_FILE_2 = "anonymousFull.xlsx"
 
 DICT_FILE = "dictionary_anonymous_file.xlsx"
 
-OUT_FILE_1 = "anonymous_translated.xlsx"
+OUT_FILE_1 = "anonymous_080620_DA_translated.xlsx"
 OUT_FILE_2 = "anonymousFull_translated.xlsx"
 
 def createDictionary(df1, df2, dict_path):
