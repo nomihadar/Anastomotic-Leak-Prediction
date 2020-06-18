@@ -5,9 +5,12 @@ def containHebrewChars(s):
     return any("\u0590" <= c <= "\u05EA" for c in s)
 
 
-#returns list of Hebrew words in a given df 
+#returns series of Hebrew words in a given df 
 def getHebrewWords(df):
     
+    if (type(df) == pd.Series) or (type(df) == list):
+        df = pd.DataFrame(df)
+
     hebrewVals = []
 
     #for each column
@@ -22,4 +25,4 @@ def getHebrewWords(df):
             #save words
             hebrewVals.extend(hebrew)
 
-    return pd.DataFrame({"words": hebrewVals})
+    return pd.Series(hebrewVals)
