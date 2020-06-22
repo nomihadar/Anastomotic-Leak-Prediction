@@ -16,53 +16,91 @@ import pandas as pd
 INPUT_FILE = "data0.csv"
 OUT_FILE = "data1.csv"
 
+def reorderColumns(df):
+    cols_ordered = ["pid", "admissionId", "eventName", \
+        "eventStartDate", "eventEndDate",  \
+        "bValue", "dValue", "iValue", "sValue", \
+        "eventDesc", "unitOfMeasure", \
+        "orderNumber", "organismId", \
+        "eventCode", "eventCodeOrg", \
+        "eventType", "eventTypeOrg", "sourceName"]
+
+    df = df[cols_ordered]
+
+def dropColumns(df):
+
+    #drop columns with all NaN's.
+    # There are columns with few non-nan values.
+    print("\nnum rows where all values are null:", \
+        df.isna().all(axis=0).sum(), "\n")
+    df.dropna(axis=1, how='all', inplace=True)
+
+    #Drop irrelevant columns
+    cols_to_drop = ["rowId", "id", "altPid", "bed", \
+        "cancelled", "converted", \
+        "messageId", "parentId", "tValue", \
+        "transferrable", "careGiver", "Time_Stamp"]
+    
+    print("num irrelevant columnas:", len(cols_to_drop), "\n") 
+
+    df.drop(columns=cols_to_drop, inplace=True)
+
+def dropRows(df):
+
+    #drop rows with all NaN's.
+    print("num rows where all values are null:", df.isna().all(axis=1).sum())
+    df.dropna(axis=0, how='all', inplace=True)
+
+    #drop duplicate rows 
+    print("\nNum duplicate rows:", df.duplicated().sum())
+    df.drop_duplicates(inplace=True)
+    
+    #drop rows where patient id is null
+    print("\nNum rows with missing patient id:", df["pid"].isna().sum(), "\n")
+    
+    #reset index 
+    df.reset_index(drop=True, inplace=True)
+
+def sortRows(df):
+
+    #parse date of start/end event
+    df['eventStartDate'] = pd.to_datetime(df['eventStartDate'], format='%Y-%m-%d')
+    df['eventEndDate'] = pd.to_datetime(df['eventEndDate'], format='%Y-%m-%d')
+    #sort
+    df.sort_values(["pid", "eventStartDate"], inplace=True)
+
 
 if __name__ == "__main__":
     
     #read input file  
     input_path = os.path.join(DPATH_DATA, INPUT_FILE) 
     df = pd.read_csv(input_path)
-    print(df.shape)
+    print("input file shape:", df.shape)
 
-    #Drop duplicate rows 
-    prev_num_rows = df.shape[0]
-    df.drop_duplicates(inplace=True)
-    print("Num duplicate rows:", prev_num_rows - df.shape[0])
+    #print info
+    print("\n\nINFO:\n\n", df.info())
 
-    #Drop rows where patient id is null
-    null_pid = df[df["pid"].isna()]
-    print(null_pid.head())
-    df = df[df["pid"].notna()]
-    print("Num rows with missing patient id:", null_pid.shape[0])
+    #print percentage of missing values in each column.
+    percent_missing = df.isna().mean().round(5).mul(100)\
+        .to_frame("% missing values")
+    print("\n", percent_missing)
 
-    #******** Missing values
-    print(df.info())
-    #drop columns with all NaN's.
-    # There are columns with few non-nan values.
-    df = df.dropna(axis=1, how='all')
-    print(df.shape)
+    #sort rows
+    sortRows(df)
 
-    #Print percentage of missing values in each column.
-    percent_missing = df.isna().mean().round(5).mul(100).rename_axis("percent missing values")
-    print(percent_missing)
+    #drop null and irrelevant columns. Num left columns: 18. 
+    dropColumns(df)
 
-    #******* Drop irrelevant columns. Num left columns: 18. 
-    cols_to_remove = ["rowId", "id", "altPid", "bed", "cancelled", "converted", \
-        "messageId", "parentId", "tValue", "transferrable", "careGiver", "Time_Stamp"]
-    df.drop(columns=cols_to_remove, inplace=True, errors='ignore')
-    print(df.info())
+    #drop rows 
+    dropRows(df)
+   
+    #print info
+    print("\n\nINFO:\n\n", df.info())
+   
+    #reorder columns
+    reorderColumns(df)
 
-    #Reorder columns
-    cols_ordered = ["pid", "admissionId", "eventName", \
-                "eventStartDate", "eventEndDate",  \
-                "bValue", "dValue", "iValue", "sValue", \
-                "eventDesc", "unitOfMeasure", \
-                "orderNumber", "organismId", \
-                "eventCode", "eventCodeOrg", \
-                "eventType", "eventTypeOrg", "sourceName"]
-
-    df = df[cols_ordered]
-
+    #print resulted shape
     print("Resulted file shape:", df.shape)
 
     #write output
